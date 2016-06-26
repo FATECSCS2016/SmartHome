@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$window,$state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,6 +21,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.styleDefault();
     }
   });
+  
+  var mqtt={
+    host:null,
+    port:null,
+    ssl:null,
+    username:null,
+    password:null
+  };
+  mqtt = window.localStorage["mqtt"];
+ // console.log("Verifying User Session..." + user);
+  if(mqtt == undefined || mqtt.host==null || mqtt.port == null){
+    console.log('Going to login');
+    $state.go('setup');
+  }else{
+    console.log(mqtt);
+    console.log('Going to devices');
+    //Socket.connect(host,port,user,password);
+    $state.go('tab.dash');
+  }
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -39,7 +58,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   // Each tab has its own nav history stack:
-
+  .state('setup', {
+      url: '/setup',
+      templateUrl: 'templates/setupMenu.html',
+      controller: 'SetupCtrl'
+  })
   .state('tab.dash', {
     url: '/dash',
     views: {
@@ -48,38 +71,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'DashCtrl'
       }
     }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/setup');
 
 });

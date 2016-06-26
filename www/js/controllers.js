@@ -1,28 +1,25 @@
 angular.module('starter.controllers', [])
-
-.controller('DashCtrl', function($scope) {})
-
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+.controller('LoginCtrl',function($scope) {
+  
 })
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('SetupCtrl', function($scope,$window) {
+  $scope.mqtt={};
+  $scope.mqtt.host=null;
+  $scope.mqtt.port=null;
+  $scope.mqtt.username=null;
+  $scope.mqtt.password=null;
+  $scope.mqtt.ssl=null;
+  $scope.connect=function(){
+     window.localStorage.setItem('mqtt',JSON.stringify($scope.mqtt));
+     console.log("saved data!!");
+     console.log(window.localStorage["mqtt"]);
+   };
+  
+})
+.controller('DashCtrl', function($scope) {
+  
+});
+/*.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-});
+*/
