@@ -1,0 +1,24 @@
+<ion-view title="Dispositivos no {{room.name}}">
+    <ion-content>
+        <div class="item range range-assertive" ng-repeat="device in devices | filter:'toggle'">
+            <i class='icon ion-ios-lightbulb-outline'></i>
+                {{ device.name }}
+            <input type="range" name="volume" min="0" max="255" ng-model="device.value" ng-change="change(device)">
+            <i class="icon ion-ios-lightbulb"></i>
+                {{ device.value }} 
+        </div>
+
+
+
+        <div class="item item-toggle item-icon-left" ng-repeat="device in devices | filter:'switch'">
+            <i class='icon ion-ios-lightbulb-outline'></i>
+            {{ device.name }}
+            <label class="toggle">
+                <input type="checkbox" ng-model="device.value" ng-change="change(device)">
+                <div class="track">
+                    <div class="handle"></div>
+                </div>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

@@ -29,16 +29,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     username:null,
     password:null
   };
-  mqtt = window.localStorage["mqtt"];
+  mqtt = JSON.parse(window.localStorage["mqtt"]);
  // console.log("Verifying User Session..." + user);
   if(mqtt == undefined || mqtt.host==null || mqtt.port == null){
     console.log('Going to login');
-    $state.go('setup');
+    $state.go('app.settings');
   }else{
     console.log(mqtt);
     console.log('Going to devices');
     //Socket.connect(host,port,user,password);
-    $state.go('tab.dash');
+    $state.go('app.home');
   }
 })
 
@@ -51,39 +51,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-
-  // Each tab has its own nav history stack:
-  .state('setup', {
-      url: '/setup',
-      templateUrl: 'templates/settings.html',
-      controller: 'SetupCtrl'
-  })
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
   .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-  .state('app.playlists', {
-      url: '/playlists',
+  // Each tab has its own nav history stack:
+  .state('app.home', {
+      url: '/home',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlist.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/home.html',
+          controller: 'HomeCtrl'
         }
       }
     })
@@ -96,9 +76,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-  ;
+    .state('app.devices', {
+      url: '/devices/:idDevice',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/devices.html',
+          controller: 'DevicesCtrl'
+        }
+      }
+    });
 
   // if none of the above states are matched, use this as the fallback
  // $urlRouterProvider.otherwise('/setup');
- $urlRouterProvider.otherwise('/app/playlists');
+ $urlRouterProvider.otherwise('/app/home');
 });
