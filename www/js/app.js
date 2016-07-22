@@ -29,7 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     username:null,
     password:null
   };
-  mqtt = JSON.parse(window.localStorage["mqtt"]);
+  //mqtt = JSON.parse(window.localStorage["mqtt"]);
  // console.log("Verifying User Session..." + user);
   if(mqtt == undefined || mqtt.host==null || mqtt.port == null){
     console.log('Going to login');

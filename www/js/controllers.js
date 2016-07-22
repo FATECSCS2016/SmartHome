@@ -15,9 +15,14 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope){
     $scope.ois=[1,2,3];
 })
-.controller('HomeCtrl', function($scope,Rooms) {
+.controller('HomeCtrl', function($scope,Rooms,mqtt) {
   $scope.rooms = Rooms.all();
-  
+  mqtt.connect().then(function(){ 
+    mqtt.publish('oi', 'teste');
+  }).err(function(data) {
+    console.log(data);
+  });
+  mqtt.publish('oi', 'teste');
 })
 .controller('DevicesCtrl', function($scope,$stateParams,Rooms){
     $scope.room=Rooms.get($stateParams.idDevice);
