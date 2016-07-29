@@ -31,6 +31,16 @@ angular.module('starter.services')
             callback.apply(null,arg);
           });
         }
+    },
+    emit:function (message) {
+      /*need to implement */
+    },
+    disconnect:function () {
+      /*need to implement */
+    },
+    isConnected:function () {
+      /*need to implement */
+      return true;
     }
   };
 });
