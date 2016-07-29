@@ -17,12 +17,16 @@ angular.module('starter.controllers', [])
 })
 .controller('HomeCtrl', function($scope,Rooms,mqtt) {
   $scope.rooms = Rooms.all();
-  mqtt.connect().then(function(){ 
-    mqtt.publish('oi', 'teste');
-  }).err(function(data) {
-    console.log(data);
-  });
-  mqtt.publish('oi', 'teste');
+  $scope.connect=function(){
+    mqtt.connect();
+    mqtt.on(function (message) {
+      console.log(message.payloadString);
+      $scope.teste=message.payloadString;
+    }); 
+  };
+  
+  
+  
 })
 .controller('DevicesCtrl', function($scope,$stateParams,Rooms){
     $scope.room=Rooms.get($stateParams.idDevice);

@@ -73,40 +73,5 @@ angular.module('starter.services', [])
       return null;
     }
   };
-})
-.factory("mqtt",function($q, $rootScope) {
-  var client = {}; 
-  function onMessageArrived(message) {
-    console.log(message.destinationName);
-    console.log(message.payloadString);
-  }
-  return {
-    connect:function() {
-      var deferred = $q.defer();
-        client = new Paho.MQTT.Client("10.42.0.1",9001,"testClient");
-        client.onMessageArrived=onMessageArrived;
-        client.connect({onSuccess:onConnect,
-          userName:'admin',
-          password:'redhat',
-          onFailure: onFailure});
-          function onConnect() {
-            console.log("connected");
-            client.subscribe("#");
-            deferred.resolve();
-          };
-          function onFailure(invocationContext, errorCode, errorMessage){
-            deferred.reject(errorMessage);
-          }
-        
-      return deferred.promise;    
-    },
-    subscribe: function(topico) {
-      
-    },
-    publish: function(topico, mensagem) {
-      message = new Paho.MQTT.Message(mensagem);
-      message.destinationName = topico;
-      client.send(message);
-    }
-  };  
 });
+
