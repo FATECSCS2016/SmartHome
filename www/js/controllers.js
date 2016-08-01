@@ -18,11 +18,13 @@ angular.module('starter.controllers', [])
 .controller('HomeCtrl', function($scope,Rooms,mqtt) {
   $scope.rooms = Rooms.all();
   $scope.connect=function(){
-    mqtt.connect();
-    mqtt.on(function (message) {
+    mqtt.connect().then()(function(){
+      console.log("Successfully connected!");
+    });
+   /* mqtt.on(function (message) {
       console.log(message.payloadString);
       $scope.teste=message.payloadString;
-    }); 
+    });*/ 
   };
   
   
