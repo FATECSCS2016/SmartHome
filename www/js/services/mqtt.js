@@ -1,6 +1,7 @@
 angular.module('starter.services')
-.factory('mqtt', function ($rootScope,$q,messages) {
+.factory('mqtt', function ($rootScope,$q) {
   var client = {};
+  var connected = false;
   return {
     connect: function (url,port,username, password, ssl) {
       console.log(url);
@@ -11,37 +12,44 @@ angular.module('starter.services')
           password:password,
           onFailure: onFailure});
       function onConnect() {
-        client.subscribe("#");
+        var connected = true;
         deferred.resolve();
       };
       function onFailure(invocationContext, errorCode, errorMessage){
-        deferred.reject(errorMessage);
+        var connected = false;
         console.log(errorCode);
+        deferred.reject(errorMessage);
       }
       return deferred.promise;
     },
     /**
      * on message arrived
      */
-    on: function (callback) {   
+    on: function (callback) {
         client.onMessageArrived=function () {
           var arg=arguments;
           console.log(arg);
-          $rootScope.$apply(function () { 
+          $rootScope.$apply(function () {
             callback.apply(null,arg);
           });
         }
+    },subscribe:function (topic) {
+      if(connected){
+        client.subscribe(topic);
+      }
     },
     emit:function (message) {
-      /*need to implement */
+      if(connected){
+        client.send(message);
+      }
     },
     disconnect:function () {
-      /*need to implement */
+      if(connected){
+        client.disconnect();
+      }
     },
     isConnected:function () {
-      /*need to implement */
-      return true;
+      return connected;
     }
   };
 });
-
