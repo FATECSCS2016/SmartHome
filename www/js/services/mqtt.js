@@ -4,21 +4,35 @@ angular.module('starter.services')
   var connected = false;
   return {
     connect: function (url,port,username, password, ssl) {
-      console.log(url);
+      console.log(connected);
       var deferred = $q.defer();
-      client = new Paho.MQTT.Client(url,port,"testClient");
-      client.connect({onSuccess:onConnect,
-          userName:username,
-          password:password,
-          onFailure: onFailure});
-      function onConnect() {
-        var connected = true;
+      if(connected==true){
+        console.log("client already connected!!!");
         deferred.resolve();
-      };
-      function onFailure(invocationContext, errorCode, errorMessage){
-        var connected = false;
-        console.log(errorCode);
-        deferred.reject(errorMessage);
+      }else{
+        client = new Paho.MQTT.Client(url,port,"testClient");
+        var properties = {};
+        properties.onFailure=onFailure;
+        properties.onSuccess=onConnect;
+        if(username!=undefined && password!=undefined){
+          properties.userName=username;
+          properties.password=password;
+        }
+        client.connect(properties);
+        function onConnect() {
+          client.subscribe('#');
+          connected = true;
+          var message
+          client.onMessageArrived=function (message) {
+             $rootScope.$broadcast('message',message);
+          };
+          deferred.resolve();
+        };
+        function onFailure(invocationContext, errorCode, errorMessage){
+          connected = false;
+          console.log(errorCode);
+          deferred.reject(errorMessage);
+        }
       }
       return deferred.promise;
     },
