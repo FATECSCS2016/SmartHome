@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Setup </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>URL</ion-label>
+      <ion-input type="text" [(ngModel)]="data.url"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>PORT</ion-label>
+      <ion-input type="number" [(ngModel)]="data.port"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>USERNAME</ion-label>
+      <ion-input type="text" [(ngModel)]="data.userName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>PASSWORD</ion-label>
+      <ion-input type="password" [(ngModel)]="data.password"></ion-input>
+    </ion-item>
+
+  </ion-list>
+  <div padding>
+      <button ion-button color="primary" block (click)="connect()">{{btnConnect}}</button>
+  </div>
+
+</ion-content>

@@ -1,4 +1,6 @@
 {
-  "name": "SmartHome",
-  "app_id": ""
+  "name": "smarthome",
+  "app_id": "",
+  "v2": true,
+  "typescript": true
 }
