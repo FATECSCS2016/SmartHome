@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Paho } from  '../../libs/mqttws31.js';
 import {Observable} from 'rxjs/Observable';
+
+import { Message } from  '../models/message';
 /*
 	Generated class for the MQTTService provider.
 
@@ -30,7 +32,7 @@ export class MQTTService {
 
 		return new Promise((resolve, reject) => {
 
-			this.client = new Paho.Client(url, port, "angularMQTT" + Math.floor(Math.random() * (1000 - 32 + 1)) + 32 );
+			this.client = new Paho.Client(url, port, "angularMQTT2" + Math.floor(Math.random() * (1000 - 32 + 1)) + 32 );
 
 			var client = this.client;
 
@@ -43,6 +45,8 @@ export class MQTTService {
 				onSuccess: () =>{
 					client.subscribe("#");
 					this.connected = true;
+					client.onMessageArrived = (data)=>{
+			}
 					resolve();
 				},
 
@@ -62,14 +66,13 @@ export class MQTTService {
 		return this.connected;
 	}
 
-	onMessage():Observable<any>{
+	onMessage():Observable<Message>{
 		//this.observable.next(data.payloadString);
 		//console.log(data.payloadString);
 		//this.observable = data.payloadString;
 		const observable = new Observable(observer => {
-			
 			this.client.onMessageArrived = (data)=>{
-				observer.next(data);
+				observer.next(new Message(data.destinationName, data.payloadString));
 			}
 
 		});

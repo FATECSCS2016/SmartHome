@@ -17,12 +17,12 @@ export class SetupPage {
 		password: "OmyBRcCKjwpi"
 	};
 
-	btnConnect = "Connect";
+	btnConnect = "Conectar";
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, private mqttService : MQTTService) {
 		
 		if(mqttService.isConnect()){
-			this.btnConnect="Connected!";
+			this.btnConnect="Conectado!";
 		}
 		
 	}
@@ -32,7 +32,7 @@ export class SetupPage {
 			this.mqttService.connect(this.data.url,this.data.port,this.data.userName,this.data.password,this.data.useSSL)
 			.then(()=>{
 				console.log("Successfully connected!");
-				this.btnConnect="Connected!";
+				this.btnConnect="Conectado!";
 			})
 			.catch((error)=>{
 				console.log(error);
